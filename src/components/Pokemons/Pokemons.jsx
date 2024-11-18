@@ -107,3 +107,4 @@ function Pokemons() {
 }
 
 export default Pokemons;
+//punto de partida v1
