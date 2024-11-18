@@ -14,21 +14,35 @@
   margin: 0 auto;
   height: auto;
   max-height: 300px; 
-  margin-top: 20px; 
+  margin-top: 25px; 
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+}
+.pokeball{
+  margin: 0 auto;
+  height: auto;
+  max-height: 150px; 
+  margin-top: 130px; 
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease-in-out;
 }
 
 /* Ajustes específicos para pantallas pequeñas */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .container-navbar {
-    height: auto; /* Ajusta la altura automáticamente */
-    padding: 15px; /* Más espacio interno para pantallas pequeñas */
+    height: 100px; 
+    padding: 20px; 
   }
 
   .logo {
-    max-height: 150px; /* Reduce aún más el tamaño del logo */
-    margin-top: 20px; /* Reduce el margen superior */
+    max-height: 150px; 
+    margin-top: 20px; 
   }
+  .pokeball{
+    max-height: 90px; 
+    margin-top: -10px; 
+  }
+
 }
