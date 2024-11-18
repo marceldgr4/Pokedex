@@ -59,6 +59,29 @@
     font-size: 20px;
     text-align: center;
 }
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-controls button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.pagination-controls span {
+  align-self: center;
+  margin: 0 10px;
+}
 
 /* Ajustes específicos para pantallas más pequeñas */
 @media (max-width: 768px) {

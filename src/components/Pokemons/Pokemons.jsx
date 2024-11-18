@@ -3,6 +3,7 @@ import "./moduloPokemons.css";
 import usePokemons from "../Hooks/usePokemons";
 import DetailsPokemon from "../Deteail/DetailsPokemon";
 import SearchPokemon from "../Search/SearchPokemon";
+import Pagination from "../pagination/Pagination";
 
 function Pokemon({ ID, Image, Name, seePokemon }) {
   return (
@@ -18,47 +19,75 @@ function Pokemon({ ID, Image, Name, seePokemon }) {
 
 function Pokemons() {
   const { pokemons, loadMorePokemons, loading, error } = usePokemons();
+  const [allPokemons, setAllPokemons] = useState([]);
   const [view, setView] = useState({ view: false, pokemon: {} });
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [search, setSearch] = useState(""); // Campo de búsqueda
   const [paginaActual, setPaginaActual] = useState(1); // Página inicial
   const ITEMS_POR_PAGINA = 20; // Número de elementos por página
 
+  // Ver detalles de un Pokémon
+  const seePokemon = (pokemon) => setView({ view: true, pokemon });
+  const noSeePokemon = () => setView({ view: false, pokemon: {} });
+
+  // Cargar los primeros 150 Pokémon al iniciar
+  useEffect(() => {
+    if (pokemons.length > 0) {
+      const first150 = pokemons.slice(0, 150); // Limitar a los primeros 150
+      setAllPokemons(first150);
+    }
+  }, [pokemons]);
+
   // Actualiza los Pokémon filtrados o paginados
   useEffect(() => {
     if (search.trim() !== "") {
       // Si hay búsqueda, filtrar por nombre
-      const results = pokemons.filter((pokemon) =>
+      const results = allPokemons.filter((pokemon) =>
         pokemon.Name.toLowerCase().includes(search.toLowerCase())
       );
       setFilteredPokemon(results);
     } else {
       // Si no hay búsqueda, aplicar paginación
       const startIndex = (paginaActual - 1) * ITEMS_POR_PAGINA;
-      const paginatedPokemon = pokemons.slice(
+      const paginatedPokemon = allPokemons.slice(
         startIndex,
         startIndex + ITEMS_POR_PAGINA
       );
       setFilteredPokemon(paginatedPokemon);
     }
-  }, [search, paginaActual, pokemons]);
+  }, [search, paginaActual, allPokemons]);
 
   // Manejar cambio de página
   const handlePageChange = async (direction) => {
-    if (direction === "next") {
-      const nextPageExists =
-        (paginaActual * ITEMS_POR_PAGINA) <
-        (search ? filteredPokemon.length : pokemons.length);
+    const maxItems = search
+      ? filteredPokemon.length
+      : allPokemons.length; // Total de Pokémon disponibles para paginar
 
-      if (!nextPageExists && !search) {
-        await loadMorePokemons(); // Solo carga más datos si no estamos buscando
+    if (direction === "next") {
+      if (paginaActual * ITEMS_POR_PAGINA >= maxItems) {
+        // Si estamos al final de la lista, cargar más Pokémon
+        await loadMorePokemons();
       }
 
-      setPaginaActual((prev) => prev + 1);
+      // Asegurarse de que no se exceda el número total de páginas
+      setPaginaActual((prev) => Math.min(prev + 1, Math.ceil(maxItems / ITEMS_POR_PAGINA)));
     } else if (direction === "prev" && paginaActual > 1) {
       setPaginaActual((prev) => prev - 1);
     }
   };
+
+  // Asegurarse de que allPokemons se actualiza cuando se cargan más Pokémon
+  useEffect(() => {
+    if (pokemons.length > allPokemons.length) {
+      setAllPokemons((prev) => [...prev, ...pokemons.slice(prev.length)]);
+    }
+  }, [pokemons]);
+
+  const totalPages = Math.ceil(
+    search
+      ? filteredPokemon.length / ITEMS_POR_PAGINA
+      : allPokemons.length / ITEMS_POR_PAGINA
+  );
 
   if (error) {
     return <p className="error-message">Error: {error}</p>;
@@ -89,22 +118,15 @@ function Pokemons() {
       </section>
 
       {/* Navegación entre páginas */}
-      <div className="pagination-controls">
-        {paginaActual > 1 && (
-          <button onClick={() => handlePageChange("prev")} disabled={loading}>
-            Anterior
-          </button>
-        )}
-        {paginaActual * ITEMS_POR_PAGINA < filteredPokemon.length ||
-        (!loading && !search) ? (
-          <button onClick={() => handlePageChange("next")} disabled={loading}>
-            Siguiente
-          </button>
-        ) : null}
-      </div>
+      {filteredPokemon.length > 0 && (
+        <Pagination
+          currentPage={paginaActual}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </>
   );
 }
 
 export default Pokemons;
-//punto de partida v1

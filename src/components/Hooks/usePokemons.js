@@ -1,55 +1,65 @@
+import { useEffect, useState } from "react";
 
-import { useEffect, useState } from 'react'
-const URL_DEFAULT = 'https://pokeapi.co/api/v2/pokemon?limit=20' 
+const URL_DEFAULT = "https://pokeapi.co/api/v2/pokemon?limit=150"; // Cargar los primeros 150 Pokémon
 
 function usePokemons() {
-    const [pokemons, setPokemons] = useState([]);
-    const [nextPageUrl, setNextPageUrl] = useState(URL_DEFAULT); // URL inicial
-    const [loading, setLoading] = useState(false);
+  const [pokemons, setPokemons] = useState([]); // Lista de Pokémon
+  const [loading, setLoading] = useState(false); // Estado de carga
+  const [error, setError] = useState(null); // Estado de error
 
-    const getPokemons = async (url = URL_DEFAULT) => {
-        setLoading(true); // Inicia el cargando
-        const response = await fetch(url);
-        const listPokemons = await response.json();
-        const { next, results } = listPokemons;
+  const getPokemons = async () => {
+    try {
+      setLoading(true); // Inicia el estado de carga
+      setError(null); // Limpia cualquier error previo
 
-        const newPokemons = await Promise.all(
-            results.map(async (pokemon) => {
-                const response = await fetch(pokemon.url);
-                const poke = await response.json();
+      const response = await fetch(URL_DEFAULT);
 
-                const abilities = poke.abilities.map((a) => a.ability.name);
-                const types = poke.types.map((t) => t.type.name);
+      if (!response.ok) {
+        throw new Error("Error al obtener los Pokémon");
+      }
 
-                return {
-                    ID: poke.id,
-                    Name: poke.name,
-                    Image: poke.sprites.other.dream_world.front_default,
-                    abilities,
-                    types,
-                };
-            })
-        );
+      const listPokemons = await response.json();
+      const { results } = listPokemons;
 
-        setLoading(false); // Termina el cargando
-        return { next, newPokemons };
-    };
+      // Obtén detalles de cada Pokémon
+      const detailedPokemons = await Promise.all(
+        results.map(async (pokemon) => {
+          const detailResponse = await fetch(pokemon.url);
 
-    const obtenerPokemons = async () => {
-        const { next, newPokemons } = await getPokemons(nextPageUrl);
-        setPokemons((prev) => [...prev, ...newPokemons]); // Agrega los nuevos datos
-        setNextPageUrl(next); // Actualiza la URL para la próxima página
-    };
+          if (!detailResponse.ok) {
+            throw new Error("Error al obtener detalles del Pokémon");
+          }
 
-    useEffect(() => {
-        obtenerPokemons();
-    }, []);
+          const poke = await detailResponse.json();
 
-    return {
-        pokemons,
-        loadMorePokemons: obtenerPokemons,
-        loading,
-    };
+          // Extrae solo los datos necesarios
+          return {
+            ID: poke.id,
+            Name: poke.name,
+            Image: poke.sprites.other.dream_world.front_default || poke.sprites.front_default,
+            Abilities: poke.abilities.map((a) => a.ability.name),
+            Types: poke.types.map((t) => t.type.name),
+          };
+        })
+      );
+
+      setPokemons(detailedPokemons); // Actualiza la lista de Pokémon
+    } catch (err) {
+      setError(err.message); // Guarda el mensaje de error
+    } finally {
+      setLoading(false); // Finaliza el estado de carga
+    }
+  };
+
+  useEffect(() => {
+    getPokemons(); // Cargar los Pokémon al inicio
+  }, []);
+
+  return {
+    pokemons, // Lista de Pokémon cargados
+    loading, // Estado de carga
+    error, // Estado de error
+  };
 }
+
 export default usePokemons;
-// punto de partida para cambios 
