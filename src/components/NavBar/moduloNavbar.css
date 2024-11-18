@@ -1,0 +1,34 @@
+/* styles.css */
+.container-navbar {
+  display: flex;
+  flex-direction: column; 
+  background-color: #ad3b33;
+  width: 100%;
+  height: 200px; /* Permite que la altura se ajuste automáticamente */
+  align-items: center;
+  padding: 20px; 
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  max-height: 300px; 
+  margin-top: 20px; 
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Ajustes específicos para pantallas pequeñas */
+@media (max-width: 768px) {
+  .container-navbar {
+    height: auto; /* Ajusta la altura automáticamente */
+    padding: 15px; /* Más espacio interno para pantallas pequeñas */
+  }
+
+  .logo {
+    max-height: 150px; /* Reduce aún más el tamaño del logo */
+    margin-top: 20px; /* Reduce el margen superior */
+  }
+}

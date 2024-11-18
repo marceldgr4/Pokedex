@@ -1,0 +1,44 @@
+/* moduloSearchPokemon.css */
+.searchBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 150px;
+}
+
+.container-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 600px; 
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  background-color: #f9f9f9;
+}
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.input-search {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+}
+
+.input-search:focus {
+  border-color: #4caf50;
+}
