@@ -1,32 +1,30 @@
-.pagination {
+/* Controles de paginación */
+.pagination-controls {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 120px;
 }
 
-.pagination-container {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  justify-content: center;
-}
-
-.pagination-container li {
-  margin: 0 5px;
-}
-
-.pagination-container li a {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
+.pagination-controls button {
+  background-color: #ffcc00; /* Color amarillo Pokémon */
+  color: #fff;
+  border: none;
   border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.active a {
-  background-color: #4caf50;
-  color: white;
+.pagination-controls button:hover {
+  background-color: #ffaa00; /* Color más oscuro al pasar el cursor */
+  transform: scale(1.05);
 }
 
-.pagination-container li a:hover {
+.pagination-controls button:disabled {
   background-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
 }
