@@ -52,7 +52,7 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu máquina local:
 ## **Estructura del proyecto**
 
 ```
-pokemon-explorer/
+pokedex/
 ├── src/
 │   ├── Components/
 │   │   ├── Pokemons/       # Listado de Pokémon y su lógica
