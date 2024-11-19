@@ -1,12 +1,12 @@
 
-# **Pokémon Explorer**
+# **PokéDex**
 
-Pokémon Explorer es una aplicación web que permite explorar y visualizar Pokémon de manera interactiva. Los usuarios pueden buscar Pokémon, ver detalles individuales, y navegar entre ellos mediante paginación.
+Pokedex es una aplicación web que permite explorar y visualizar Pokémon de manera interactiva. Los usuarios pueden buscar Pokémon, ver detalles individuales, y navegar entre ellos mediante paginación.
 
 ## **Características principales**
-- 📖 Listado de Pokémon con información básica (nombre e ID).
+- 📖 Listado de Pokémon con información básica (nombre e Id).
 - 🔍 Funcionalidad de búsqueda por nombre.
-- 🖼️ Vista detallada de cada Pokémon, incluyendo una imagen y sus estadísticas.
+- 🖼️ Vista detallada de cada Pokémon, incluyendo una imagen y sus habilidades.
 - ⏭️ Navegación paginada y carga de más Pokémon dinámicamente.
 - 🎨 Interfaz amigable y responsiva con efectos visuales atractivos.
 
