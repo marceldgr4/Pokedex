@@ -1,6 +1,6 @@
-import React from 'react'
-import Navbar from './components/Navbar/Navbar'
-import Pokemons from './components/Pokemons/Pokemons'
+import React from 'react';
+import Navbar from "./components/NavBar/Navbar";
+import Pokemons from './components/Pokemons/Pokemons';
 
 function App() {
   return (
@@ -10,4 +10,4 @@ function App() {
     </>
   )
 }
-export default App
+export default App;
